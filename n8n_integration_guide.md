@@ -88,7 +88,7 @@ CREATE TABLE notificaciones (
 
 Tu webhook ya está configurado:
 ```
-https://nathacc18.app..cloud/webhook-test/24a76578-55f8-421c-b5c6-f754e82b3a53
+https://nathacc18.app.n8n.cloud/webhook-test/antigravity-reservas
 ```
 
 **IMPORTANTE**: Este webhook está hardcodeado en `_send_data.php`. Si cambias la URL, actualiza también el archivo PHP.
@@ -409,7 +409,7 @@ if ($resultado['success']) {
 - **Setup Tables**: http://localhost/Proyecto_final6t0/nombre-proyecto/setup__tables.php
 - **Webhook Handler**: http://localhost/Proyecto_final6t0/nombre-proyecto/_webhook_handler.php
 - ** Dashboard**: https://nathacc18.app..cloud
-- **Webhook URL**: https://nathacc18.app..cloud/webhook-test/24a76578-55f8-421c-b5c6-f754e82b3a53
+- **Webhook URL**: https://nathacc18.app.n8n.cloud/webhook-test/antigravity-reservas
 
 ---
 

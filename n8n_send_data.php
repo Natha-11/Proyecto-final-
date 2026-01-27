@@ -1,6 +1,6 @@
 <?php
 /**
- * n8n Send Data
+ * Enviar Datos a n8n
  * Función helper para enviar datos al webhook de n8n
  * Se puede incluir en otros archivos PHP para notificar eventos
  */
@@ -15,9 +15,18 @@
  */
 function enviarAn8n($evento, $datos, $webhook_url = null)
 {
-    // URL del webhook de n8n (proporcionada por el usuario)
+    // Configuración de n8n
+    // Cambia 'test' a 'prod' para usar el webhook permanente
+    $env = 'prod';
+    $base_url = 'https://nathacc18.app.n8n.cloud';
+    $path = 'antigravity-reservas';
+
     if (!$webhook_url) {
-        $webhook_url = 'https://nathacc18.app.n8n.cloud/webhook-test/24a76578-55f8-421c-b5c6-f754e82b3a53';
+        if ($env === 'prod') {
+            $webhook_url = "{$base_url}/webhook/{$path}";
+        } else {
+            $webhook_url = "{$base_url}/webhook-test/{$path}";
+        }
     }
 
     // Preparar payload
@@ -117,10 +126,10 @@ if (basename(__FILE__) == basename($_SERVER['SCRIPT_FILENAME'])) {
     } else {
         // GET request - mostrar información
         echo json_encode([
-            'message' => 'n8n Send Data Helper',
-            'usage' => 'Include this file and call enviarAn8n($evento, $datos)',
-            'webhook_url' => 'https://nathacc18.app.n8n.cloud/webhook-test/24a76578-55f8-421c-b5c6-f754e82b3a53',
-            'test' => 'POST JSON to this endpoint to test sending to n8n'
+            'message' => 'Ayuda para enviar datos a n8n',
+            'usage' => 'Incluye este archivo y llama a enviarAn8n($evento, $datos)',
+            'webhook_url' => 'https://nathacc18.app.n8n.cloud/webhook-test/antigravity-reservas',
+            'test' => 'Envía JSON mediante POST a este endpoint para probar el envío a n8n'
         ], JSON_UNESCAPED_UNICODE);
     }
 }

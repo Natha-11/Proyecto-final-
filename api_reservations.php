@@ -3,7 +3,7 @@ include 'conexion.php';
 
 header('Content-Type: application/json');
 
-// Fetch all reservations from today onwards
+// Obtener todas las reservas desde hoy en adelante
 $today = date('Y-m-d');
 $sql = "SELECT fecha, hora, nombre_cliente, servicio FROM reservas WHERE fecha >= ? ORDER BY fecha ASC, hora ASC";
 

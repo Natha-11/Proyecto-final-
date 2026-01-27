@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 'fecha_registro' => date('Y-m-d H:i:s')
             ]);
 
-            // Auto-login logic
+            // Lógica de inicio de sesión automático
             session_start();
             $_SESSION['user_id'] = $user_id;
             $_SESSION['user_name'] = $nombre;

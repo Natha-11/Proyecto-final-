@@ -1,6 +1,6 @@
 <?php
 /**
- * n8n Webhook Handler
+ * Manejador de Webhook de n8n
  * Recibe y procesa datos enviados desde workflows de n8n
  */
 

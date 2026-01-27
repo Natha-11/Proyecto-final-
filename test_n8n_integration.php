@@ -1,6 +1,6 @@
 <?php
 /**
- * Test n8n Integration
+ * Prueba de Integración de n8n
  * Archivo de prueba para verificar la integración con n8n
  */
 

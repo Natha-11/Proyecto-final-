@@ -71,6 +71,18 @@
         const showRegister = document.getElementById('show-register');
         const showLogin = document.getElementById('show-login');
 
+        // Comprobar la URL para el modo
+        const urlParams = new URLSearchParams(window.location.search);
+        const mode = urlParams.get('mode');
+
+        if (mode === 'register') {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+        } else {
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+        }
+
         showRegister.addEventListener('click', (e) => {
             e.preventDefault();
             loginForm.style.display = 'none';

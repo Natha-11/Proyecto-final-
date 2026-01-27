@@ -9,11 +9,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $fecha = $_POST['fecha'];
     $hora = $_POST['hora'];
 
-    // Check if user is logged in for customer ID (optional enhancement)
+    // Comprobar si el usuario ha iniciado sesión para el ID del cliente (mejora opcional)
     session_start();
     $cliente_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
 
-    // Verificar disponibilidad antes de insertar (Backend double check)
+    // Verificar disponibilidad antes de insertar (Doble comprobación en el backend)
     $check_sql = "SELECT id FROM reservas WHERE fecha = ? AND hora = ?";
     $stmt_check = $conexion->prepare($check_sql);
     $stmt_check->bind_param("ss", $fecha, $hora);

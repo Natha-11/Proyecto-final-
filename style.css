@@ -1,9 +1,9 @@
-/* Variables & Reset */
+/* Variables y Reinicio */
 :root {
     --bg-color: #0a0a0a;
     --text-color: #f5f5f5;
     --primary-color: #d4a5a5;
-    /* Rose Gold */
+    /* Oro Rosa */
     --secondary-color: #8e5e5e;
     --accent-color: #e0cbc1;
     --dark-section: #121212;
@@ -24,14 +24,14 @@ body {
     font-family: var(--font-sans);
     overflow-x: hidden;
     cursor: none;
-    /* Hide default cursor */
+    /* Ocultar el cursor predeterminado */
 }
 
 html {
     scroll-behavior: smooth;
 }
 
-/* Custom Cursor */
+/* Cursor Personalizado */
 .cursor-dot,
 .cursor-outline {
     position: fixed;
@@ -60,38 +60,50 @@ body:hover .cursor-outline {
     opacity: 1;
 }
 
-/* Header & Nav */
+/* Encabezado y Navegación */
 header {
     position: fixed;
     top: 0;
     width: 100%;
-    padding: 1.5rem 5%;
+    padding: 1rem 8%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 100;
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    transition: padding 0.3s ease;
+    z-index: 1000;
+    background: rgba(10, 10, 10, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.logo {
+header.scrolled {
+    padding: 0.8rem 8%;
+    background: rgba(5, 5, 5, 0.9);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.logo-container {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
-.logo img {
-    height: 70px;
-    /* Optimal size for navbar */
-    width: auto;
-    object-fit: contain;
-    transition: transform 0.3s ease, filter 0.3s ease;
+.logo-img-circular {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 15px rgba(212, 165, 165, 0.3);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #000;
 }
 
-.logo:hover img {
-    transform: scale(1.05);
-    filter: drop-shadow(0 0 8px rgba(212, 165, 165, 0.5));
-    /* Rose gold glow */
+.logo-container:hover .logo-img-circular {
+    transform: rotate(10deg) scale(1.1);
+    box-shadow: 0 0 25px rgba(212, 165, 165, 0.6);
+    border-color: #fff;
 }
 
 .nav-links {
@@ -103,14 +115,34 @@ header {
 .nav-links a {
     text-decoration: none;
     color: var(--text-color);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: color 0.3s;
+    letter-spacing: 2px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    opacity: 0.8;
 }
 
 .nav-links a:hover {
     color: var(--primary-color);
+    opacity: 1;
+    letter-spacing: 3px;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
 }
 
 .nav-links .nav-cta {
@@ -125,7 +157,7 @@ header {
     color: #000;
 }
 
-/* Hero Section */
+/* Sección Hero */
 .hero-section {
     height: 100vh;
     width: 100%;
@@ -134,12 +166,12 @@ header {
     align-items: center;
     justify-content: center;
     text-align: center;
-    /* Fallback gradient if image fails or isn't there */
-    background: linear-gradient(135deg, #1a0f0f 0%, #3a1c1c 100%);
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('imagen1.jpg') no-repeat center center/cover;
+    background-attachment: fixed;
     overflow: hidden;
 }
 
-/* Simulate complex background texturally */
+/* Simular fondo complejo de forma textural */
 .hero-section::before {
     content: '';
     position: absolute;
@@ -156,18 +188,39 @@ header {
     position: relative;
     z-index: 2;
     padding: 0 1rem;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
 }
 
 .hero-content h1 {
     font-family: var(--font-serif);
-    font-size: 5rem;
-    line-height: 1.1;
-    margin-bottom: 1rem;
+    font-size: 6rem;
+    line-height: 0.9;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: -2px;
 }
 
 .hero-content .highlight {
-    color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color), #fff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-style: italic;
+    display: inline-block;
+    filter: drop-shadow(0 0 10px rgba(212, 165, 165, 0.3));
 }
 
 .hero-content p {
@@ -194,9 +247,11 @@ header {
 .cta-button:hover {
     background: var(--primary-color);
     color: #000;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(212, 165, 165, 0.4);
 }
 
-/* Sections General */
+/* Secciones Generales */
 .section-padding {
     padding: 8rem 5%;
 }
@@ -209,7 +264,7 @@ header {
     color: var(--accent-color);
 }
 
-/* Products Grid */
+/* Cuadrícula de Productos */
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -217,30 +272,51 @@ header {
 }
 
 .product-card {
-    background: #151515;
-    padding: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 2.5rem;
     text-align: center;
-    transition: transform 0.3s ease;
-    border: 1px solid #222;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: 0.5s;
+}
+
+.product-card:hover::before {
+    left: 100%;
 }
 
 .product-card:hover {
-    transform: translateY(-10px);
-    border-color: var(--secondary-color);
+    transform: translateY(-15px) scale(1.02);
+    border-color: var(--primary-color);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 165, 165, 0.1);
 }
 
 .product-img {
     width: 100%;
-    aspect-ratio: 1/1;
-    margin-bottom: 1.5rem;
+    aspect-ratio: 4/5;
+    margin-bottom: 2rem;
     object-fit: cover;
-    border-radius: 4px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    transition: transform 0.5s ease;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .product-card:hover .product-img {
-    transform: scale(1.03);
+    transform: scale(1.05);
+    filter: brightness(1.1);
 }
 
 .product-card h3 {
@@ -272,7 +348,7 @@ header {
     color: #000;
 }
 
-/* Philosophy Split */
+/* División de Filosofía */
 .split-layout {
     display: flex;
     align-items: center;
@@ -303,7 +379,7 @@ header {
     border-bottom-color: var(--primary-color);
 }
 
-/* Footer */
+/* Pie de página */
 footer {
     padding: 5rem 5%;
     border-top: 1px solid #222;
@@ -365,7 +441,7 @@ footer {
     border-top: 1px solid #111;
 }
 
-/* Animations */
+/* Animaciones */
 .fade-in {
     opacity: 0;
     transform: translateY(20px);
@@ -387,7 +463,7 @@ footer {
     }
 }
 
-/* Mobile */
+/* Móvil */
 .menu-toggle {
     display: none;
     flex-direction: column;
@@ -436,7 +512,7 @@ footer {
         height: 50vh;
     }
 
-    /* Auto show cursor on touch devices to avoid issues */
+    /* Mostrar automáticamente el cursor en dispositivos táctiles para evitar problemas */
     body {
         cursor: auto;
     }
@@ -447,14 +523,14 @@ footer {
     }
 }
 
-/* Booking Section */
+/* Sección de Reservas */
 .booking-section {
     position: relative;
     background-color: #0d0d0d;
     overflow: hidden;
 }
 
-/* Decorative background glow */
+/* Brillo de fondo decorativo */
 .booking-section::before {
     content: '';
     position: absolute;
@@ -513,7 +589,7 @@ footer {
     padding: 1rem;
 }
 
-/* Philosophy Image */
+/* Imagen de Filosofía */
 .philosophy-img {
     flex: 1;
     height: 50vh;
@@ -542,7 +618,7 @@ footer {
     }
 }
 
-/* Login Section */
+/* Sección de Inicio de Sesión */
 .login-section {
     display: flex;
     justify-content: center;
@@ -570,7 +646,7 @@ footer {
     z-index: 2;
     width: 100%;
     max-width: 480px;
-    /* Slightly wider for better spacing */
+    /* Ligeramente más ancho para un mejor espaciado */
     background: rgba(20, 20, 20, 0.8);
     border: 1px solid rgba(212, 165, 165, 0.2);
     backdrop-filter: blur(25px);
@@ -578,14 +654,14 @@ footer {
     /* More rounded */
     padding: 3.5rem 3rem;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(255, 255, 255, 0.02);
-    /* Multi-layer soft shadow */
+    /* Sombra suave de múltiples capas */
     transition: all 0.4s ease;
     margin: auto;
 }
 
 .login-container:hover {
     box-shadow: 0 40px 80px rgba(212, 165, 165, 0.08);
-    /* Glow effect on hover */
+    /* Efecto de brillo al pasar el cursor */
     border-color: rgba(212, 165, 165, 0.4);
     transform: translateY(-5px);
 }
@@ -596,7 +672,7 @@ footer {
     color: var(--accent-color);
     text-align: center;
     margin-bottom: 2.5rem;
-    /* Increased spacing */
+    /* Espaciado aumentado */
     letter-spacing: 2px;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
@@ -607,13 +683,13 @@ footer {
     margin-bottom: 2.5rem;
     display: flex;
     justify-content: center;
-    /* Center the input within the box */
+    /* Centrar la entrada dentro del cuadro */
 }
 
 .input-box input {
     width: 100%;
     max-width: 90%;
-    /* Visually restrict width to look more centered */
+    /* Restringir visualmente el ancho para que parezca más centrado */
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 16px 20px;
@@ -625,7 +701,7 @@ footer {
     border-radius: 50px;
     text-align: center;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-    /* Inner depth */
+    /* Profundidad interna */
 }
 
 .input-box input::placeholder {
@@ -640,10 +716,10 @@ footer {
     background: rgba(255, 255, 255, 0.15);
     box-shadow: 0 0 20px rgba(212, 165, 165, 0.4);
     transform: scale(1.02);
-    /* Subtle zoom on focus */
+    /* Zoom sutil al enfocar */
 }
 
-/* Calendar / Hours Grid Styling */
+/* Estilo de la cuadrícula de calendario / horas */
 .hours-container {
     width: 100%;
     margin-top: 1rem;
@@ -707,7 +783,7 @@ footer {
     font-weight: 600;
     cursor: pointer;
     background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
-    /* Gradient button */
+    /* Botón de degradado */
     color: #fff;
     border: none;
     margin-top: 1.5rem;
@@ -721,7 +797,7 @@ footer {
 .cta-button:hover {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     box-shadow: 0 15px 30px rgba(212, 165, 165, 0.4);
-    /* Glowing hover */
+    /* Brillo al pasar el cursor */
     transform: translateY(-2px);
     color: #fff;
 }
@@ -783,31 +859,31 @@ footer {
     }
 }
 
-/* Booking Calendar Implementation - Minimalist Redesign */
+/* Implementación del Calendario de Reservas - Rediseño Minimalista */
 
 .booking-layout {
     display: flex;
-    flex-direction: column;
-    /* List below calendar */
+    flex-direction: row;
+    /* Calendario y espacios/lista lado a lado */
     gap: 3rem;
     margin-top: 3rem;
     max-width: 900px;
-    /* Constrain width for elegance */
+    /* Restringir el ancho para mayor elegancia */
     margin-left: auto;
     margin-right: auto;
 }
 
-/* Calendar Section */
+/* Sección de Calendario */
 .calendar-section {
-    width: 100%;
+    flex: 1.5;
 }
 
-/* Calendar Container - Clean Matte Dark */
+/* Contenedor del Calendario - Oscuro Mate Limpio */
 .calendar-container {
     background: #1a1a1a;
     border: 1px solid #333;
     border-radius: 8px;
-    /* Softer, but structured */
+    /* Más suave, pero estructurado */
     padding: 40px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
@@ -825,7 +901,7 @@ footer {
     font-family: var(--font-serif);
     font-size: 2.2rem;
     color: #f5f5f5;
-    /* Clean white/grey */
+    /* Blanco/gris limpio */
     letter-spacing: 1px;
     text-align: center;
     flex-grow: 1;
@@ -871,7 +947,7 @@ footer {
     gap: 8px;
 }
 
-/* Minimalist Day Cell */
+/* Celda de Día Minimalista */
 .calendar-day {
     aspect-ratio: 1/1;
     background: #111;
@@ -898,7 +974,7 @@ footer {
     pointer-events: none;
 }
 
-/* Selected State */
+/* Estado Seleccionado */
 .calendar-day.selected {
     background: #fff;
     border-color: #fff;
@@ -911,10 +987,10 @@ footer {
 
 .calendar-day.selected .day-marker {
     background-color: #000;
-    /* Contrast */
+    /* Contraste */
 }
 
-/* Today State */
+/* Estado de Hoy */
 .calendar-day.today {
     border: 1px solid var(--primary-color);
 }
@@ -926,23 +1002,23 @@ footer {
     z-index: 2;
 }
 
-/* Marker for Reservation (Minimal Dot) */
+/* Marcador para Reserva (Punto Minimalista) */
 .day-marker {
     width: 5px;
     height: 5px;
     background-color: var(--primary-color);
-    /* Rose Gold Dot */
+    /* Punto de Oro Rosa */
     border-radius: 50%;
     position: absolute;
     bottom: 8px;
 }
 
-/* Appointment List - Below Calendar (Minimalist) */
+/* Lista de Citas - Debajo del Calendario (Minimalista) */
 .appointments-section {
-    width: 100%;
+    flex: 1;
     background: transparent;
-    border-top: 1px solid #333;
-    padding-top: 30px;
+    border-left: 1px solid #333;
+    padding-left: 30px;
 }
 
 .list-header {
@@ -961,7 +1037,7 @@ footer {
     gap: 15px;
 }
 
-/* Minimalist Appointment Item */
+/* Elemento de Cita Minimalista */
 .appointment-item {
     background: #151515;
     border: 1px solid #222;
@@ -992,10 +1068,10 @@ footer {
     font-family: var(--font-sans);
     font-size: 0.85rem;
     color: #666;
-    /* Muted time */
+    /* Hora silenciada */
 }
 
-/* Hours Selection - Clean Pills */
+/* Selección de Horas - Pastillas Limpias */
 .hours-container {
     margin-top: 2rem;
     border-top: 1px solid #333;
@@ -1013,7 +1089,7 @@ footer {
     border: 1px solid #444;
     color: #ccc;
     border-radius: 2px;
-    /* Slight round */
+    /* Redondeo ligero */
     padding: 12px 0;
     font-size: 0.9rem;
     font-weight: 400;
@@ -1036,16 +1112,16 @@ footer {
 
 .time-slot.reserved {
     border-color: #222;
-    /* Very subtle */
+    /* Muy sutil */
     color: #444;
     cursor: not-allowed;
     text-decoration: line-through;
 }
 
-/* Sticky CTA Button Integration */
-/* Ensuring the button stays prominent */
+/* Integración del Botón CTA Pegajoso */
+/* Asegurar que el botón siga siendo prominente */
 .cta-button {
-    /* Re-affirming previous style but making sure it fits the minimal theme */
+    /* Reafirmando el estilo anterior pero asegurándose de que encaje con el tema minimalista */
     background: #fff;
     color: #000;
     border-radius: 4px;
@@ -1060,6 +1136,19 @@ footer {
     box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
 }
 
+@media (max-width: 900px) {
+    .booking-layout {
+        flex-direction: column;
+    }
+
+    .appointments-section {
+        border-left: none;
+        border-top: 1px solid #333;
+        padding-left: 0;
+        padding-top: 30px;
+    }
+}
+
 @media (max-width: 600px) {
     .calendar-container {
         padding: 20px;
@@ -1068,4 +1157,219 @@ footer {
     .calendar-day {
         font-size: 0.9rem;
     }
+}
+
+/* Cuadrícula de Fortalezas */
+.fortalezas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.fortaleza-item h4 {
+    color: var(--primary-color);
+    font-family: var(--font-serif);
+    margin-bottom: 0.5rem;
+}
+
+.fortaleza-item p {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* Estilos del Carrito */
+.cart-trigger {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    position: relative;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s;
+}
+
+.cart-trigger:hover {
+    color: var(--primary-color);
+}
+
+#cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--primary-color);
+    color: #000;
+    font-size: 0.7rem;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-drawer {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    background: var(--dark-section);
+    z-index: 1000;
+    padding: 2rem;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.cart-drawer.open {
+    right: 0;
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #222;
+}
+
+.cart-header h3 {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    color: var(--primary-color);
+}
+
+#close-cart {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.cart-items {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 2rem;
+}
+
+.cart-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #1a1a1a;
+    align-items: center;
+}
+
+.cart-item-info {
+    flex: 1;
+}
+
+.cart-item-info h5 {
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+}
+
+.cart-item-info .price {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+}
+
+.remove-item {
+    background: transparent;
+    border: none;
+    color: #555;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.remove-item:hover {
+    color: #ff4444;
+}
+
+.cart-footer {
+    padding-top: 1.5rem;
+    border-top: 1px solid #222;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.checkout-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary-color);
+    border: none;
+    color: #000;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+}
+
+.cart-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Formulario de Mensaje */
+.message-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--dark-section);
+    padding: 3rem;
+    border-radius: 8px;
+    border: 1px solid #222;
+}
+
+#n8n-form textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #333;
+    color: #fff;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.status-msg {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.status-msg.success {
+    color: #44ff44;
+}
+
+.status-msg.error {
+    color: #ff4444;
 }

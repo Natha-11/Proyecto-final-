@@ -1,26 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Custom Cursor Logic
+    // Lógica del cursor personalizado
     const cursorDot = document.getElementById('cursor-dot');
     const cursorOutline = document.getElementById('cursor-outline');
 
-    // Only active on non-touch devices ideally, but simpler to just run
+    // Idealmente solo activo en dispositivos sin pantalla táctil, pero es más sencillo simplemente ejecutarlo
     window.addEventListener('mousemove', (e) => {
         const posX = e.clientX;
         const posY = e.clientY;
 
-        // Dot follows instantly
+        // El punto sigue instantáneamente
         cursorDot.style.left = `${posX}px`;
         cursorDot.style.top = `${posY}px`;
 
-        // Outline follows with delay (handled by CSS transition usually or JS animation)
-        // Using animate for smoother trailing effect
+        // El contorno sigue con retraso (generalmente manejado por la transición CSS o la animación JS)
+        // Usando animate para un efecto de seguimiento más suave
         cursorOutline.animate({
             left: `${posX}px`,
             top: `${posY}px`
         }, { duration: 500, fill: "forwards" });
     });
 
-    // Hover effects for cursor
+    // Efectos de desplazamiento para el cursor
     const interactiveElements = document.querySelectorAll('a, button, .product-card');
     interactiveElements.forEach(el => {
         el.addEventListener('mouseenter', () => {
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Mobile Menu Toggle
+    // Alternancia del menú móvil
     const menuToggle = document.getElementById('mobile-menu');
     const navLinks = document.querySelector('.nav-links');
 
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
     });
 
-    // Scroll Animations (Intersection Observer)
+    // Animaciones de desplazamiento (Intersection Observer)
     const observerOptions = {
         threshold: 0.1
     };
@@ -64,5 +64,15 @@ document.addEventListener('DOMContentLoaded', () => {
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
         observer.observe(el);
+    });
+
+    // Scroll header effect
+    const header = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
     });
 });

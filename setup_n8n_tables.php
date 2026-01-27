@@ -1,6 +1,6 @@
 <?php
 /**
- * Setup n8n Integration Tables
+ * Configuración de Tablas de Integración de n8n
  * Crea las tablas necesarias para la integración con n8n
  */
 

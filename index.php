@@ -21,12 +21,16 @@
     <div class="cursor-outline" id="cursor-outline"></div>
 
     <header id="navbar">
-
+        <div class="logo-container">
+            <a href="#hero">
+                <img src="logo_estudio.jpg" alt="Glow Belleza Logo" class="logo-img-circular">
+            </a>
+        </div>
         <nav>
             <ul class="nav-links">
                 <li><a href="#hero">Inicio</a></li>
                 <li><a href="#collection">Colección</a></li>
-                <li><a href="#philosophy">Filosofía</a></li>
+                <li><a href="#about">Sobre Nosotros</a></li>
                 <li><a href="#contact">Contacto</a></li>
                 <li><a href="#booking" class="nav-cta">Citas</a></li>
                 <?php if (isset($_SESSION['user_id'])): ?>
@@ -36,7 +40,17 @@
                     <li><a href="logout.php" style="font-size: 0.8rem;">Salir</a></li>
                 <?php else: ?>
                     <li><a href="login.php">Iniciar Sesión</a></li>
+                    <li><a href="login.php?mode=register" style="font-weight: 500;">Registrar</a></li>
                 <?php endif; ?>
+                <li>
+                    <button id="cart-btn" class="cart-trigger">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0"></path>
+                        </svg>
+                        <span id="cart-count">0</span>
+                    </button>
+                </li>
             </ul>
         </nav>
         <div class="menu-toggle" id="mobile-menu">
@@ -81,13 +95,24 @@
         </div>
     </section>
 
-    <section id="philosophy" class="philosophy-section">
+    <section id="about" class="section-padding philosophy-section">
         <div class="container split-layout">
             <div class="text-content">
-                <h2 class="section-title">Nuestra Filosofía</h2>
-                <p>Creemos que el maquillaje no es una máscara, sino un medio para revelar tu verdadera luz interior.
-                    Cada producto es formulado con pasión, utilizando ingredientes de la más alta pureza.</p>
-                <a href="#" class="text-link">Leer más</a>
+                <h2 class="section-title">Sobre Nosotros</h2>
+                <p>En Glow Belleza, nuestra <strong>Fortaleza</strong> reside en la combinación de técnica avanzada y un
+                    profundo entendimiento de la belleza individual. Nos dedicamos a resaltar lo mejor de cada persona
+                    con un toque de lujo y exclusividad.</p>
+                <div class="fortalezas-grid">
+                    <div class="fortaleza-item">
+                        <h4>Atención Personalizada</h4>
+                        <p>Cada servicio es diseñado a medida para tus rasgos y estilo.</p>
+                    </div>
+                    <div class="fortaleza-item">
+                        <h4>Productos Premium</h4>
+                        <p>Utilizamos solo las mejores marcas de la industria.</p>
+                    </div>
+                </div>
+                <a href="#contact" class="text-link">Contáctanos</a>
             </div>
             <img src="imagen4.jpg" alt="Filosofía LUMIÈRE" class="philosophy-img">
         </div>
@@ -171,7 +196,45 @@
         </div>
     </section>
 
-    <!-- ... Footer ... -->
+    <!-- Cajón del Carrito -->
+    <div id="cart-drawer" class="cart-drawer">
+        <div class="cart-header">
+            <h3>Tu Carrito</h3>
+            <button id="close-cart">&times;</button>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <!-- Los artículos se añaden aquí -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="total-price">$0</span>
+            </div>
+            <button class="checkout-btn">Finalizar Compra</button>
+        </div>
+    </div>
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <!-- Sección de Mensaje n8n -->
+    <section id="n8n-message" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Enviar Mensaje Directo</h2>
+            <div class="message-form-container">
+                <form id="n8n-form">
+                    <div class="form-group">
+                        <input type="text" id="msg-nombre" placeholder="Tu Nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="msg-contenido" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                    </div>
+                    <button type="submit" class="cta-button">Enviar a n8n</button>
+                </form>
+                <div id="n8n-status" class="status-msg"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ... Pie de página ... -->
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
@@ -191,13 +254,13 @@
             let currentYear = currentDate.getFullYear();
             let reservations = [];
 
-            // Business Hours
+            // Horas de trabajo
             const businessHours = [
                 "09:00", "10:00", "11:00", "12:00", "13:00",
                 "14:00", "15:00", "16:00", "17:00", "18:00"
             ];
 
-            // 1. Fetch Reservations
+            // 1. Obtener Reservas
             async function fetchReservations() {
                 try {
                     const res = await fetch('api_reservations.php');
@@ -210,13 +273,13 @@
                 }
             }
 
-            // 2. Render Appointment List (Minimalist, Privacy Focused)
+            // 2. Renderizar Lista de Citas (Minimalista, Enfocado en la Privacidad)
             function renderAppointmentList() {
                 appointmentList.innerHTML = '';
 
-                // Filter only future (today onwards)
+                // Filtrar solo las futuras (desde hoy en adelante)
                 const todayStr = new Date().toISOString().split('T')[0];
-                const upcoming = reservations.filter(r => r.fecha >= todayStr).slice(0, 12); // Show up to 12
+                const upcoming = reservations.filter(r => r.fecha >= todayStr).slice(0, 12); // Mostrar hasta 12
 
                 if (upcoming.length === 0) {
                     appointmentList.innerHTML = '<p style="color:#444; font-style:italic; grid-column: 1/-1; text-align:center;">No hay citas próximas.</p>';
@@ -227,16 +290,16 @@
                     const item = document.createElement('div');
                     item.className = 'appointment-item';
 
-                    // Format Date: "22 Ene"
-                    // Fix timezone offset for display
+                    // Formato de Fecha: "22 Ene"
+                    // Corregir el desplazamiento de la zona horaria para la visualización
                     const dateParts = res.fecha.split('-');
                     const dateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
                     const dateStr = dateObj.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
 
-                    // Clean Time: "14:00" (remove seconds if present)
+                    // Limpiar Hora: "14:00" (eliminar segundos si están presentes)
                     const timeStr = res.hora.substring(0, 5);
 
-                    // NO CLIENT NAME RENDERED
+                    // NO SE MUESTRA EL NOMBRE DEL CLIENTE
                     item.innerHTML = `
                         <div class="appt-date">${dateStr}</div>
                         <div class="appt-time">${timeStr}</div>
@@ -245,37 +308,37 @@
                 });
             }
 
-            // 3. Render Calendar
+            // 3. Renderizar Calendario
             function renderCalendar(month, year) {
                 calendarGrid.innerHTML = '';
 
-                // Title
+                // Título
                 const monthName = new Date(year, month).toLocaleDateString('es-ES', { month: 'long' });
                 monthYearTitle.textContent = `${monthName.charAt(0).toUpperCase() + monthName.slice(1)} ${year}`;
 
-                const firstDay = new Date(year, month, 1).getDay(); // 0 is Sunday
+                const firstDay = new Date(year, month, 1).getDay(); // 0 es Domingo
                 const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-                // Empty slots for previous month
+                // Espacios vacíos para el mes anterior
                 for (let i = 0; i < firstDay; i++) {
                     const empty = document.createElement('div');
                     empty.className = 'calendar-day empty';
                     calendarGrid.appendChild(empty);
                 }
 
-                // Days
+                // Días
                 for (let day = 1; day <= daysInMonth; day++) {
                     const dayCell = document.createElement('div');
                     dayCell.className = 'calendar-day';
 
-                    // Format YYYY-MM-DD
+                    // Formato AAAA-MM-DD
                     const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
-                    // Check if today
+                    // Comprobar si es hoy
                     const todayStr = new Date().toISOString().split('T')[0];
                     if (dateString === todayStr) dayCell.classList.add('today');
 
-                    // Check for reservations (Minimal Dot Indicator)
+                    // Comprobar reservas (Indicador de punto minimalista)
                     const dayReservations = reservations.filter(r => r.fecha === dateString);
                     const hasReservation = dayReservations.length > 0;
 
@@ -287,15 +350,15 @@
 
                     dayCell.innerHTML = html;
 
-                    // Click Event
+                    // Evento de Clic
                     dayCell.addEventListener('click', () => {
-                        // Select logic
+                        // Lógica de selección
                         document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
                         dayCell.classList.add('selected');
 
                         bookingDateInput.value = dateString;
 
-                        // Format display date
+                        // Formato de fecha de visualización
                         const dateParts = dateString.split('-');
                         const dateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
                         selectedDateDisplay.textContent = dateObj.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
@@ -307,7 +370,7 @@
                 }
             }
 
-            // 4. Load Hours Logic
+            // 4. Lógica de Carga de Horas
             async function loadHours(fecha) {
                 hoursGrid.style.display = 'block';
                 hoursGridContainer.innerHTML = '<p style="color:#666; font-size:0.8rem;">Cargando...</p>';
@@ -320,7 +383,7 @@
 
                     hoursGridContainer.innerHTML = '';
 
-                    // Check past date
+                    // Comprobar fecha pasada
                     const dateParts = fecha.split('-');
                     const checkDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
                     const today = new Date();
@@ -335,8 +398,8 @@
                         const btn = document.createElement('div');
                         btn.classList.add('time-slot');
 
-                        // Check availability
-                        // Note: backend returns H:i:s usually, or H:i. Let's fuzzy match to be safe or assuming format match
+                        // Comprobar disponibilidad
+                        // Nota: el backend suele devolver H:i:s, o H:i. Vamos a hacer una coincidencia difusa para estar seguros o asumiendo que el formato coincide
                         const isReserved = reserved.some(r => r.startsWith(hora));
 
                         if (isReserved) {
@@ -360,7 +423,7 @@
                 }
             }
 
-            // Navigation
+            // Navegación
             prevBtn.addEventListener('click', () => {
                 currentMonth--;
                 if (currentMonth < 0) {
@@ -379,7 +442,7 @@
                 renderCalendar(currentMonth, currentYear);
             });
 
-            // Submit
+            // Enviar
             document.getElementById('bookingForm').addEventListener('submit', (e) => {
                 if (!bookingDateInput.value || !selectedHoraInput.value) {
                     e.preventDefault();
@@ -387,7 +450,114 @@
                 }
             });
 
-            // Init
+            // --- Lógica del Carrito de Compras ---
+            const cartBtn = document.getElementById('cart-btn');
+            const cartDrawer = document.getElementById('cart-drawer');
+            const cartOverlay = document.getElementById('cart-overlay');
+            const closeCart = document.getElementById('close-cart');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const totalPriceEl = document.getElementById('total-price');
+
+            let cart = JSON.parse(localStorage.getItem('glow_cart') || '[]');
+
+            function updateCartUI() {
+                cartItemsContainer.innerHTML = '';
+                let total = 0;
+
+                cart.forEach((item, index) => {
+                    total += item.price;
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'cart-item';
+                    itemDiv.innerHTML = `
+                        <div class="cart-item-info">
+                            <h5>${item.name}</h5>
+                            <span class="price">$${item.price}</span>
+                        </div>
+                        <button class="remove-item" onclick="removeFromCart(${index})">Eliminar</button>
+                    `;
+                    cartItemsContainer.appendChild(itemDiv);
+                });
+
+                cartCount.textContent = cart.length;
+                totalPriceEl.textContent = `$${total}`;
+                localStorage.setItem('glow_cart', JSON.stringify(cart));
+            }
+
+            window.addToCart = (name, price) => {
+                cart.push({ name, price });
+                updateCartUI();
+                openCartDrawer();
+            };
+
+            window.removeFromCart = (index) => {
+                cart.splice(index, 1);
+                updateCartUI();
+            };
+
+            function openCartDrawer() {
+                cartDrawer.classList.add('open');
+                cartOverlay.classList.add('open');
+            }
+
+            function closeCartDrawer() {
+                cartDrawer.classList.remove('open');
+                cartOverlay.classList.remove('open');
+            }
+
+            cartBtn.addEventListener('click', openCartDrawer);
+            closeCart.addEventListener('click', closeCartDrawer);
+            cartOverlay.addEventListener('click', closeCartDrawer);
+
+            // Añadir eventos de clic a los botones "Añadir" en los productos
+            document.querySelectorAll('.product-card').forEach(card => {
+                const btn = card.querySelector('.add-cart');
+                const name = card.querySelector('h3').textContent;
+                const price = parseInt(card.querySelector('.price').textContent.replace('$', ''));
+
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    addToCart(name, price);
+                });
+            });
+
+            updateCartUI();
+
+            // --- Lógica del Formulario de Mensaje n8n ---
+            const n8nForm = document.getElementById('n8n-form');
+            const n8nStatus = document.getElementById('n8n-status');
+
+            n8nForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const nombre = document.getElementById('msg-nombre').value;
+                const mensaje = document.getElementById('msg-contenido').value;
+
+                n8nStatus.textContent = 'Enviando...';
+                n8nStatus.className = 'status-msg';
+
+                try {
+                    const response = await fetch('ajax_send_n8n.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ nombre, mensaje })
+                    });
+                    const result = await response.json();
+
+                    if (result.success) {
+                        n8nStatus.textContent = '¡Mensaje enviado con éxito!';
+                        n8nStatus.classList.add('success');
+                        n8nForm.reset();
+                    } else {
+                        n8nStatus.textContent = 'Error: ' + (result.message || 'No se pudo enviar.');
+                        n8nStatus.classList.add('error');
+                    }
+                } catch (err) {
+                    n8nStatus.textContent = 'Error de conexión.';
+                    n8nStatus.classList.add('error');
+                }
+            });
+
+            // Inicio
             await fetchReservations();
         });
     </script>
