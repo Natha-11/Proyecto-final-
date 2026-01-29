@@ -32,14 +32,14 @@
                 <li><a href="#collection">Colección</a></li>
                 <li><a href="#about">Sobre Nosotros</a></li>
                 <li><a href="#contact">Contacto</a></li>
-                <li><a href="#booking" class="nav-cta">Citas</a></li>
                 <?php if (isset($_SESSION['user_id'])): ?>
+                    <li><a href="#booking" class="nav-cta">Citas</a></li>
                     <li><a href="#" style="color: var(--primary-color);">Hola,
                             <?php echo htmlspecialchars($_SESSION['user_name']); ?>
                         </a></li>
                     <li><a href="logout.php" style="font-size: 0.8rem;">Salir</a></li>
                 <?php else: ?>
-                    <li><a href="login.php">Iniciar Sesión</a></li>
+                    <li><a href="login.php">Login</a></li>
                     <li><a href="login.php?mode=register" style="font-weight: 500;">Registrar</a></li>
                 <?php endif; ?>
                 <li>
@@ -118,83 +118,84 @@
         </div>
     </section>
 
-    <section id="booking" class="section-padding booking-section">
-        <div class="container">
-            <h2 class="section-title">Reserva tu Cita</h2>
-            <form class="booking-form" action="registro.php" method="POST" id="bookingForm">
-                <input type="hidden" name="hora" id="selectedHora" required>
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <section id="booking" class="section-padding booking-section">
+            <div class="container">
+                <h2 class="section-title">Reserva tu Cita</h2>
+                <form class="booking-form" action="registro.php" method="POST" id="bookingForm">
+                    <input type="hidden" name="hora" id="selectedHora" required>
 
-                <div class="form-group">
-                    <input type="text" name="nombre" placeholder="Nombre Completo"
-                        value="<?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : ''; ?>"
-                        required>
-                    <!-- Eliminado telefono ya que no está en la tabla reservas nueva, o podemos dejarlo si se requiere -->
-                    <!-- Si el usuario lo pidió, podemos agregarlo, pero por ahora nos ceñimos a lo básico funcional -->
-                </div>
+                    <div class="form-group">
+                        <input type="text" name="nombre" placeholder="Nombre Completo"
+                            value="<?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : ''; ?>"
+                            required>
+                        <input type="email" name="email" placeholder="Tu Correo Electrónico" required>
+                    </div>
 
-                <div class="form-group">
-                    <select name="servicio" required>
-                        <option value="" disabled selected>Selecciona Servicio</option>
-                        <option value="natural">Natural - $500</option>
-                        <option value="soft-glam">Soft Glam - $600</option>
-                        <option value="smokey-eyes">Smokey Eyes - $1200</option>
-                    </select>
-                </div>
+                    <div class="form-group">
+                        <select name="servicio" required>
+                            <option value="" disabled selected>Selecciona Servicio</option>
+                            <option value="natural">Natural - $500</option>
+                            <option value="soft-glam">Soft Glam - $600</option>
+                            <option value="smokey-eyes">Smokey Eyes - $1200</option>
+                        </select>
+                    </div>
 
-                <!-- Wrapper oculto para el input de fecha (para enviar con el form) -->
-                <input type="hidden" name="fecha" id="bookingDateInput" required>
+                    <!-- Wrapper oculto para el input de fecha (para enviar con el form) -->
+                    <input type="hidden" name="fecha" id="bookingDateInput" required>
 
-                <div class="booking-layout">
-                    <!-- Sección del Calendario -->
-                    <div class="calendar-section">
-                        <div class="calendar-container">
-                            <div class="calendar-header">
-                                <button type="button" class="calendar-nav-btn" id="prevMonth">&lt;</button>
-                                <h3 id="calendarMonthYear">Mes Año</h3>
-                                <button type="button" class="calendar-nav-btn" id="nextMonth">&gt;</button>
+                    <div class="booking-layout">
+                        <!-- Sección del Calendario -->
+                        <div class="calendar-section">
+                            <div class="calendar-container">
+                                <div class="calendar-header">
+                                    <button type="button" class="calendar-nav-btn" id="prevMonth">&lt;</button>
+                                    <h3 id="calendarMonthYear">Mes Año</h3>
+                                    <button type="button" class="calendar-nav-btn" id="nextMonth">&gt;</button>
+                                </div>
+                                <div class="calendar-grid-header">
+                                    <div>Dom</div>
+                                    <div>Lun</div>
+                                    <div>Mar</div>
+                                    <div>Mié</div>
+                                    <div>Jue</div>
+                                    <div>Vie</div>
+                                    <div>Sáb</div>
+                                </div>
+                                <div class="calendar-grid" id="calendarGrid">
+                                    <!-- JS generará los días aquí -->
+                                </div>
                             </div>
-                            <div class="calendar-grid-header">
-                                <div>Dom</div>
-                                <div>Lun</div>
-                                <div>Mar</div>
-                                <div>Mié</div>
-                                <div>Jue</div>
-                                <div>Vie</div>
-                                <div>Sáb</div>
-                            </div>
-                            <div class="calendar-grid" id="calendarGrid">
-                                <!-- JS generará los días aquí -->
+
+                            <!-- Time Slots (Debajo del calendario) -->
+                            <div class="hours-container" id="hoursGrid" style="display: none;">
+                                <p style="color: #666; margin-bottom: 1rem; text-align: center; font-size: 0.9rem;">
+                                    HORAS DISPONIBLES PARA <span id="selectedDateDisplay"
+                                        style="color:#fff; font-weight: 500;"></span>
+                                </p>
+                                <div class="hours-grid" id="hoursGridContainer">
+                                    <!-- JS generará las horas -->
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Time Slots (Debajo del calendario) -->
-                        <div class="hours-container" id="hoursGrid" style="display: none;">
-                            <p style="color: #666; margin-bottom: 1rem; text-align: center; font-size: 0.9rem;">
-                                HORAS DISPONIBLES PARA <span id="selectedDateDisplay"
-                                    style="color:#fff; font-weight: 500;"></span>
-                            </p>
-                            <div class="hours-grid" id="hoursGridContainer">
-                                <!-- JS generará las horas -->
+                        <!-- Lista de Citas (Debajo del calendario en desktop también) -->
+                        <div class="appointments-section">
+                            <h4 class="list-header">Citas Agendadas</h4>
+                            <div id="appointmentList" class="appointment-list-grid">
+                                <p style="color: #444; text-align: center; grid-column: 1/-1;">Cargando...</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Lista de Citas (Debajo del calendario en desktop también) -->
-                    <div class="appointments-section">
-                        <h4 class="list-header">Citas Agendadas</h4>
-                        <div id="appointmentList" class="appointment-list-grid">
-                            <p style="color: #444; text-align: center; grid-column: 1/-1;">Cargando...</p>
-                        </div>
+                    <div style="text-align: center; margin-top: 3rem;">
+                        <button type="submit" class="cta-button" style="width: 100%; max-width: 400px;">Confirmar
+                            Reserva</button>
                     </div>
-                </div>
-
-                <div style="text-align: center; margin-top: 3rem;">
-                    <button type="submit" class="cta-button" style="width: 100%; max-width: 400px;">Confirmar
-                        Reserva</button>
-                </div>
-            </form>
-        </div>
-    </section>
+                </form>
+            </div>
+        </section>
+    <?php endif; ?>
 
     <!-- Cajón del Carrito -->
     <div id="cart-drawer" class="cart-drawer">
@@ -215,24 +216,31 @@
     </div>
     <div id="cart-overlay" class="cart-overlay"></div>
 
-    <!-- Sección de Mensaje n8n -->
-    <section id="n8n-message" class="section-padding">
-        <div class="container">
-            <h2 class="section-title">Enviar Mensaje Directo</h2>
-            <div class="message-form-container">
-                <form id="n8n-form">
-                    <div class="form-group">
-                        <input type="text" id="msg-nombre" placeholder="Tu Nombre" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="msg-contenido" placeholder="Escribe tu mensaje aquí..." required></textarea>
-                    </div>
-                    <button type="submit" class="cta-button">Enviar a n8n</button>
-                </form>
-                <div id="n8n-status" class="status-msg"></div>
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <!-- Sección de Mensaje n8n -->
+        <section id="n8n-message" class="section-padding">
+            <div class="container">
+                <h2 class="section-title">Enviar Mensaje Directo</h2>
+                <div class="message-form-container">
+                    <form id="n8n-form">
+                        <div class="form-group">
+                            <input type="text" id="msg-nombre" placeholder="Tu Nombre"
+                                value="<?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : ''; ?>"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="msg-email" placeholder="Tu Correo Electrónico" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="msg-contenido" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                        </div>
+                        <button type="submit" class="cta-button">Enviar Mensaje</button>
+                    </form>
+                    <div id="n8n-status" class="status-msg"></div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    <?php endif; ?>
 
     <!-- ... Pie de página ... -->
 
@@ -530,6 +538,7 @@
             n8nForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const nombre = document.getElementById('msg-nombre').value;
+                const email = document.getElementById('msg-email').value;
                 const mensaje = document.getElementById('msg-contenido').value;
 
                 n8nStatus.textContent = 'Enviando...';
@@ -539,7 +548,7 @@
                     const response = await fetch('ajax_send_n8n.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ nombre, mensaje })
+                        body: JSON.stringify({ nombre, email, mensaje })
                     });
                     const result = await response.json();
 

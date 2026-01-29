@@ -73,7 +73,7 @@ function enviarAn8n($evento, $datos, $webhook_url = null)
 
     return [
         'success' => ($http_code >= 200 && $http_code < 300),
-        'message' => $http_code >= 200 && $http_code < 300 ? 'Enviado a n8n exitosamente' : 'Error al enviar a n8n',
+        'message' => $http_code >= 200 && $http_code < 300 ? 'Enviado a n8n exitosamente' : 'Error al enviar a n8n (HTTP ' . $http_code . '): ' . $response,
         'http_code' => $http_code,
         'response' => $response
     ];

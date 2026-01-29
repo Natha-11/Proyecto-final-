@@ -5,6 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Validar que los campos no vengan vacíos
     $nombre = $_POST['nombre'];
+    $email_cliente = $_POST['email'];
     $servicio = $_POST['servicio'];
     $fecha = $_POST['fecha'];
     $hora = $_POST['hora'];
@@ -45,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $resultado_n8n = enviarAn8n('nueva_reserva', [
                 'reserva_id' => $reserva_id,
                 'nombre' => $nombre,
+                'email' => $email_cliente,
                 'servicio' => $servicio,
                 'fecha' => $fecha,
                 'hora' => $hora,
